@@ -53,35 +53,32 @@ const selectNRemoveATodo = event => {
   }
 }
 
-const getTextOfSearchInput = () => {
+const todoText = todo => {
   const inputValue = event.target.value.trim().toLowerCase()
-  return inputValue
+  const checkTodoValue = todo.textContent.toLowerCase().includes(inputValue)
+  return checkTodoValue
 }
 
-const showOrHideATodo = () => {
-  const inputValue = getTextOfSearchInput()
-  const hide = Array.from(todosContainer.children)
-    .filter(todo => !todo.textContent.toLowerCase().includes(inputValue))
+const hideOrShowClass = () => {
+  const todos = Array.from(todosContainer.children)
+  todos
+    .filter(todo => !todoText(todo))
     .forEach(todo => {
       todo.classList.remove("d-flex")
       todo.classList.add("hidden")
     })
-  const show = Array.from(todosContainer.children)
-    .filter(todo => todo.textContent.toLowerCase().includes(inputValue))
+  todos
+    .filter(todo => todoText(todo))
     .forEach(todo => {
       todo.classList.add("d-flex")
       todo.classList.remove("hidden")
     })
-
-  return hide, show
 }
 
 const searchATodo = event => {
-  const hideOrShowATodo = showOrHideATodo()
+  hideOrShowClass()
 }
 
 formAddTodo.addEventListener("submit", getANewTodo)
-
 todosContainer.addEventListener("click", selectNRemoveATodo)
-
 searchInput.addEventListener("input", searchATodo)
